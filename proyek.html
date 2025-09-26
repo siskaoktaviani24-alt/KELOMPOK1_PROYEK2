@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kafe Kita - Pemesanan & Reservasi</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Reset CSS */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      /* Header Styles */
+      header {
+        background-color: #8b4513;
+        color: white;
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .logo span {
+        color: #ffd700;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: #ffd700;
+      }
+
+      .cart-icon {
+        background-color: #ffd700;
+        color: #8b4513;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ff4d4d;
+        color: white;
+        font-size: 12px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        color: white;
+        text-align: center;
+      }
+
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .hero p {
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: #ffd700;
+        color: #8b4513;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #8b4513;
+        color: #ffd700;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 2px solid #8b4513;
+        color: #8b4513;
+      }
+
+      .btn-outline:hover {
+        background-color: #8b4513;
+        color: white;
+      }
+
+      /* Menu Section */
+      .section-title {
+        text-align: center;
+        margin: 50px 0 30px;
+        font-size: 32px;
+        color: #8b4513;
+      }
+
+      .categories {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .category-btn {
+        background-color: #f1f1f1;
+        border: none;
+        padding: 10px 20px;
+        margin: 0 5px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .category-btn.active,
+      .category-btn:hover {
+        background-color: #8b4513;
+        color: white;
+      }
+
+      .menu-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+      }
+
+      .menu-item {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .menu-item:hover {
+        transform: translateY(-10px);
+      }
+
+      .menu-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .menu-item-content {
+        padding: 20px;
+      }
+
+      .menu-item-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .menu-item-desc {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .menu-item-price {
+        font-weight: bold;
+        color: #8b4513;
+        font-size: 18px;
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      .add-to-cart {
+        background-color: #8b4513;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+      }
+
+      .add-to-cart:hover {
+        background-color: #6b3300;
+      }
+
+      /* Reservation Section */
+      .reservation {
+        background-color: #f5f5f5;
+        padding: 50px 0;
+      }
+
+      .reservation-form {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+      }
+
+      /* Cart Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .close-modal {
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .cart-items {
+        margin: 20px 0;
+      }
+
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .cart-item-info {
+        flex: 1;
+        margin-left: 10px;
+      }
+
+      .cart-item-title {
+        font-weight: 500;
+      }
+
+      .cart-item-price {
+        color: #8b4513;
+      }
+
+      .cart-item-quantity {
+        display: flex;
+        align-items: center;
+      }
+
+      .quantity-btn {
+        background-color: #f1f1f1;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .quantity {
+        margin: 0 10px;
+      }
+
+      .cart-total {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: right;
+        margin: 20px 0;
+      }
+
+      .checkout-btn {
+        background-color: #8b4513;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+        transition: background-color 0.3s;
+      }
+
+      .checkout-btn:hover {
+        background-color: #6b3300;
+      }
+
+      /* Checkout Steps */
+      .checkout-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      .checkout-steps::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #ddd;
+        z-index: 1;
+      }
+
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #ddd;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+
+      .step.active .step-number {
+        background-color: #8b4513;
+      }
+
+      .step.completed .step-number {
+        background-color: #4caf50;
+      }
+
+      .step-title {
+        font-size: 14px;
+        text-align: center;
+      }
+
+      /* Payment Methods */
+      .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .payment-method {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      .payment-method:hover {
+        border-color: #8b4513;
+      }
+
+      .payment-method.selected {
+        border-color: #8b4513;
+        background-color: rgba(139, 69, 19, 0.1);
+      }
+
+      .payment-method i {
+        font-size: 24px;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      /* Order Summary */
+      .order-summary {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+      }
+
+      /* Footer */
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 50px 0 20px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .footer-section h3 {
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+
+      .footer-section p,
+      .footer-section li {
+        margin-bottom: 10px;
+        color: #ccc;
+      }
+
+      .footer-section ul {
+        list-style: none;
+      }
+
+      .footer-section a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-section a:hover {
+        color: #ffd700;
+      }
+
+      .social-icons a {
+        display: inline-block;
+        margin-right: 15px;
+        font-size: 20px;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid #444;
+        color: #ccc;
+        font-size: 14px;
+      }
+
+      /* Success Message */
+      .success-message {
+        text-align: center;
+        padding: 40px 0;
+      }
+
+      .success-message i {
+        font-size: 60px;
+        color: #4caf50;
+        margin-bottom: 20px;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        nav ul {
+          margin-top: 15px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        nav ul li {
+          margin: 5px 10px;
+        }
+
+        .hero h1 {
+          font-size: 36px;
+        }
+
+        .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .payment-methods {
+          grid-template-columns: 1fr;
+        }
+
+        .checkout-steps {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .checkout-steps::before {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">Kafe <span>Kita</span></div>
+          <nav>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#menu">Menu</a></li>
+              <li><a href="#reservation">Reservasi</a></li>
+              <li><a href="#about">Tentang Kami</a></li>
+              <li><a href="#contact">Kontak</a></li>
+            </ul>
+          </nav>
+          <div class="cart-icon" onclick="openCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="cart-count">0</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <div>
+            <h1>Selamat Datang di Kafe Kita</h1>
+            <p>
+              Nikmati berbagai hidangan lezat dan suasana yang nyaman untuk
+              bersantai bersama keluarga dan teman-teman.
+            </p>
+            <a href="#menu" class="btn">Lihat Menu</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+      <div class="container">
+        <h2 class="section-title">Menu Kami</h2>
+
+        <div class="categories">
+          <button class="category-btn active" onclick="filterMenu('all')">
+            Semua
+          </button>
+          <button class="category-btn" onclick="filterMenu('makanan')">
+            Makanan
+          </button>
+          <button class="category-btn" onclick="filterMenu('minuman')">
+            Minuman
+          </button>
+          <button class="category-btn" onclick="filterMenu('snack')">
+            Snack
+          </button>
+          <button class="category-btn" onclick="filterMenu('dessert')">
+            Dessert
+          </button>
+        </div>
+
+        <div class="menu-items">
+          <!-- Menu Item 1 -->
+          <div class="menu-item" data-category="makanan">
+            <img
+              src="https://images.unsplash.com/photo-1594007654729-407eedc4fe0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+              alt="Nasi Goreng Spesial"
+            />
+            <div class="menu-item-content">
+              <h3 class="menu-item-title">Nasi Goreng Spesial</h3>
+              <p class="menu-item-desc">
+                Nasi goreng dengan campuran daging ayam, udang, dan sayuran.
+              </p>
+              <span class="menu-item-price">Rp 25.000</span>
+              <button
+                class="add-to-cart"
+                onclick="addToCart('Nasi Goreng Spesial', 25000, 'https://images.unsplash.com/photo-1594007654729-407eedc4fe0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')"
+              >
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+
+          <!-- Menu Item 2 -->
+          <div class="menu-item" data-category="makanan">
+            <img
+              src="https://images.unsplash.com/photo-1552611052-33e04de081de?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+              alt="Mie Ayam"
+            />
+            <div class="menu-item-content">
+              <h3 class="menu-item-title">Mie Ayam</h3>
+              <p class="menu-item-desc">
+                Mie ayam dengan daging ayam cincang dan pangsit goreng.
+              </p>
+              <span class="menu-item-price">Rp 20.000</span>
+              <button
+                class="add-to-cart"
+                onclick="addToCart('Mie Ayam', 20000, 'https://images.unsplash.com/photo-1552611052-33e04de081de?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')"
+              >
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+
+          <!-- Menu Item 3 -->
+          <div class="menu-item" data-category="minuman">
+            <img
+              src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+              alt="Es Jeruk"
+            />
+            <div class="menu-item-content">
+              <h3 class="menu-item-title">Es Jeruk</h3>
+              <p class="menu-item-desc">
+                Minuman segar dari perasan jeruk asli dengan es.
+              </p>
+              <span class="menu-item-price">Rp 12.000</span>
+              <button
+                class="add-to-cart"
+                onclick="addToCart('Es Jeruk', 12000, 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')"
+              >
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+
+          <!-- Menu Item 4 -->
+          <div class="menu-item" data-category="minuman">
+            <img
+              src="https://images.unsplash.com/photo-1563227815-9e5c4af5e475?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+              alt="Cappuccino"
+            />
+            <div class="menu-item-content">
+              <h3 class="menu-item-title">Cappuccino</h3>
+              <p class="menu-item-desc">
+                Kopi dengan tambahan susu steamed dan foam.
+              </p>
+              <span class="menu-item-price">Rp 18.000</span>
+              <button
+                class="add-to-cart"
+                onclick="addToCart('Cappuccino', 18000, 'https://images.unsplash.com/photo-1563227815-9e5c4af5e475?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')"
+              >
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+
+          <!-- Menu Item 5 -->
+          <div class="menu-item" data-category="snack">
+            <img
+              src="https://images.unsplash.com/photo-1558961364-851f5e3c6dac?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+              alt="Kentang Goreng"
+            />
+            <div class="menu-item-content">
+              <h3 class="menu-item-title">Kentang Goreng</h3>
+              <p class="menu-item-desc">
+                Kentang goreng renyah dengan saus pilihan.
+              </p>
+              <span class="menu-item-price">Rp 15.000</span>
+              <button
+                class="add-to-cart"
+                onclick="addToCart('Kentang Goreng', 15000, 'https://images.unsplash.com/photo-1558961364-851f5e3c6dac?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')"
+              >
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+
+          <!-- Menu Item 6 -->
+          <div class="menu-item" data-category="dessert">
+            <img
+              src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+              alt="Pancake"
+            />
+            <div class="menu-item-content">
+              <h3 class="menu-item-title">Pancake</h3>
+              <p class="menu-item-desc">
+                Pancake lembut dengan sirup maple dan buah segar.
+              </p>
+              <span class="menu-item-price">Rp 22.000</span>
+              <button
+                class="add-to-cart"
+                onclick="addToCart('Pancake', 22000, 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80')"
+              >
+                Tambah ke Keranjang
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservation Section -->
+    <section id="reservation" class="reservation">
+      <div class="container">
+        <h2 class="section-title">Reservasi Meja</h2>
+
+        <div class="reservation-form">
+          <form id="reservationForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Nama Lengkap</label>
+                <input type="text" id="name" required />
+              </div>
+              <div class="form-group">
+                <label for="phone">Nomor Telepon</label>
+                <input type="tel" id="phone" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="date">Tanggal Reservasi</label>
+                <input type="date" id="date" required />
+              </div>
+              <div class="form-group">
+                <label for="time">Waktu</label>
+                <input type="time" id="time" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="guests">Jumlah Tamu</label>
+                <select id="guests" required>
+                  <option value="">Pilih jumlah tamu</option>
+                  <option value="1-2">1-2 orang</option>
+                  <option value="3-4">3-4 orang</option>
+                  <option value="5-6">5-6 orang</option>
+                  <option value="7+">7+ orang</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="tableType">Jenis Meja</label>
+                <select id="tableType" required>
+                  <option value="">Pilih jenis meja</option>
+                  <option value="standard">Standard</option>
+                  <option value="booth">Booth</option>
+                  <option value="outdoor">Outdoor</option>
+                  <option value="private">Private Room</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="specialRequests">Permintaan Khusus</label>
+              <textarea id="specialRequests" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn">Reservasi Sekarang</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeCart()">&times;</span>
+        <h2>Keranjang Belanja</h2>
+
+        <div class="cart-items" id="cartItems">
+          <!-- Cart items will be added here dynamically -->
+          <p id="emptyCart">Keranjang belanja Anda masih kosong.</p>
+        </div>
+
+        <div class="cart-total" id="cartTotal">Total: Rp 0</div>
+
+        <button class="checkout-btn" onclick="startCheckout()">
+          Lanjut ke Checkout
+        </button>
+      </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeCheckout()">&times;</span>
+
+        <div class="checkout-steps">
+          <div class="step active" id="step1">
+            <div class="step-number">1</div>
+            <div class="step-title">Data Diri</div>
+          </div>
+          <div class="step" id="step2">
+            <div class="step-number">2</div>
+            <div class="step-title">Metode Pembayaran</div>
+          </div>
+          <div class="step" id="step3">
+            <div class="step-number">3</div>
+            <div class="step-title">Konfirmasi</div>
+          </div>
+        </div>
+
+        <!-- Step 1: Customer Information -->
+        <div id="checkoutStep1">
+          <h2>Data Diri</h2>
+          <form id="customerForm">
+            <div class="form-group">
+              <label for="customerName">Nama Lengkap</label>
+              <input type="text" id="customerName" required />
+            </div>
+            <div class="form-group">
+              <label for="customerEmail">Email</label>
+              <input type="email" id="customerEmail" required />
+            </div>
+            <div class="form-group">
+              <label for="customerPhone">Nomor Telepon</label>
+              <input type="tel" id="customerPhone" required />
+            </div>
+            <div class="form-group">
+              <label for="customerAddress">Alamat</label>
+              <textarea id="customerAddress" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="customerNote">Catatan Pesanan (opsional)</label>
+              <textarea id="customerNote" rows="2"></textarea>
+            </div>
+            <button type="button" class="btn" onclick="goToStep(2)">
+              Lanjut
+            </button>
+          </form>
+        </div>
+
+        <!-- Step 2: Payment Method -->
+        <div id="checkoutStep2" style="display: none">
+          <h2>Metode Pembayaran</h2>
+          <div class="payment-methods">
+            <div class="payment-method" onclick="selectPayment('bank')">
+              <i class="fas fa-university"></i>
+              <div>Transfer Bank</div>
+            </div>
+            <div class="payment-method" onclick="selectPayment('credit')">
+              <i class="fas fa-credit-card"></i>
+              <div>Kartu Kredit</div>
+            </div>
+            <div class="payment-method" onclick="selectPayment('debit')">
+              <i class="fas fa-credit-card"></i>
+              <div>Kartu Debit</div>
+            </div>
+            <div class="payment-method" onclick="selectPayment('cash')">
+              <i class="fas fa-money-bill-wave"></i>
+              <div>Tunai di Tempat</div>
+            </div>
+          </div>
+
+          <div id="bankDetails" style="display: none; margin-top: 20px">
+            <h3>Transfer Bank</h3>
+            <p>Silakan transfer ke rekening berikut:</p>
+            <p><strong>Bank BCA: 1234567890 (Kafe Kita)</strong></p>
+            <p>Total yang harus dibayar: <span id="bankTotal">Rp 0</span></p>
+          </div>
+
+          <div id="cardDetails" style="display: none; margin-top: 20px">
+            <h3>Detail Kartu</h3>
+            <div class="form-group">
+              <label for="cardNumber">Nomor Kartu</label>
+              <input
+                type="text"
+                id="cardNumber"
+                placeholder="1234 5678 9012 3456"
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cardExpiry">Masa Berlaku</label>
+                <input type="text" id="cardExpiry" placeholder="MM/YY" />
+              </div>
+              <div class="form-group">
+                <label for="cardCVC">CVV/CVC</label>
+                <input type="text" id="cardCVC" placeholder="123" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cardName">Nama pada Kartu</label>
+              <input type="text" id="cardName" />
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 20px;
+              display: flex;
+              justify-content: space-between;
+            "
+          >
+            <button type="button" class="btn btn-outline" onclick="goToStep(1)">
+              Kembali
+            </button>
+            <button type="button" class="btn" onclick="goToStep(3)">
+              Lanjut
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Confirmation -->
+        <div id="checkoutStep3" style="display: none">
+          <h2>Konfirmasi Pesanan</h2>
+
+          <div class="order-summary">
+            <h3>Detail Pesanan</h3>
+            <div id="confirmItems">
+              <!-- Order items will be added here -->
+            </div>
+            <div class="summary-total">
+              <span>Total:</span>
+              <span id="confirmTotal">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="order-summary">
+            <h3>Data Diri</h3>
+            <div class="summary-item">
+              <span>Nama:</span>
+              <span id="confirmName">-</span>
+            </div>
+            <div class="summary-item">
+              <span>Email:</span>
+              <span id="confirmEmail">-</span>
+            </div>
+            <div class="summary-item">
+              <span>Telepon:</span>
+              <span id="confirmPhone">-</span>
+            </div>
+            <div class="summary-item">
+              <span>Alamat:</span>
+              <span id="confirmAddress">-</span>
+            </div>
+            <div class="summary-item">
+              <span>Metode Pembayaran:</span>
+              <span id="confirmPayment">-</span>
+            </div>
+          </div>
+
+          <div
+            style="
+              margin-top: 20px;
+              display: flex;
+              justify-content: space-between;
+            "
+          >
+            <button type="button" class="btn btn-outline" onclick="goToStep(2)">
+              Kembali
+            </button>
+            <button type="button" class="btn" onclick="confirmOrder()">
+              Konfirmasi Pesanan
+            </button>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="checkoutSuccess" style="display: none">
+          <div class="success-message">
+            <i class="fas fa-check-circle"></i>
+            <h2>Pesanan Berhasil!</h2>
+            <p>Terima kasih telah memesan di Kafe Kita.</p>
+            <p>Kode pesanan Anda: <strong id="orderCode">CAFE12345</strong></p>
+            <p>Kami akan mengirimkan detail pesanan ke email Anda.</p>
+            <button type="button" class="btn" onclick="closeCheckout()">
+              Tutup
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Tentang Kafe Kita</h3>
+            <p>
+              Kafe yang nyaman dengan berbagai pilihan makanan dan minuman lezat
+              untuk dinikmati bersama keluarga dan teman-teman.
+            </p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Jam Operasional</h3>
+            <p>Senin - Jumat: 09:00 - 22:00</p>
+            <p>Sabtu - Minggu: 08:00 - 23:00</p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Kontak Kami</h3>
+            <p>Jl. Contoh Alamat No. 123</p>
+            <p>Email: info@kafekita.com</p>
+            <p>Telepon: (021) 1234-5678</p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Follow Kami</h3>
+            <div class="social-icons">
+              <a href="#">Facebook</a>
+              <a href="#">Instagram</a>
+              <a href="#">Twitter</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2023 Kafe Kita. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Cart functionality
+      let cart = [];
+      let cartCount = document.querySelector(".cart-count");
+      let cartItems = document.getElementById("cartItems");
+      let emptyCart = document.getElementById("emptyCart");
+      let cartTotal = document.getElementById("cartTotal");
+      let cartModal = document.getElementById("cartModal");
+
+      // Add to cart function
+      function addToCart(name, price, image) {
+        // Check if item already in cart
+        let existingItem = cart.find((item) => item.name === name);
+
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({
+            name: name,
+            price: price,
+            image: image,
+            quantity: 1,
+          });
+        }
+
+        updateCart();
+        alert(`${name} telah ditambahkan ke keranjang!`);
+      }
+
+      // Update cart display
+      function updateCart() {
+        // Update cart count
+        let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+        cartCount.textContent = totalItems;
+
+        // Update cart items
+        if (cart.length === 0) {
+          emptyCart.style.display = "block";
+          cartItems.innerHTML =
+            '<p id="emptyCart">Keranjang belanja Anda masih kosong.</p>';
+        } else {
+          emptyCart.style.display = "none";
+          let cartHTML = "";
+          let total = 0;
+
+          cart.forEach((item, index) => {
+            let itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            cartHTML += `
+                        <div class="cart-item">
+                            <img src="${item.image}" alt="${
+              item.name
+            }" width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                            <div class="cart-item-info">
+                                <div class="cart-item-title">${item.name}</div>
+                                <div class="cart-item-price">Rp ${item.price.toLocaleString()}</div>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                            </div>
+                            <div style="margin-left: 15px;">
+                                <button onclick="removeFromCart(${index})" style="background: none; border: none; cursor: pointer; color: #ff4d4d; font-size: 18px;">×</button>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          cartItems.innerHTML = cartHTML;
+          cartTotal.textContent = `Total: Rp ${total.toLocaleString()}`;
+        }
+      }
+
+      // Change item quantity
+      function changeQuantity(index, change) {
+        cart[index].quantity += change;
+
+        if (cart[index].quantity <= 0) {
+          cart.splice(index, 1);
+        }
+
+        updateCart();
+      }
+
+      // Remove item from cart
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+      }
+
+      // Open cart modal
+      function openCart() {
+        cartModal.style.display = "flex";
+      }
+
+      // Close cart modal
+      function closeCart() {
+        cartModal.style.display = "none";
+      }
+
+      // Checkout function
+      function checkout() {
+        if (cart.length === 0) {
+          alert("Keranjang belanja Anda masih kosong.");
+          return;
+        }
+
+        alert(
+          "Terima kasih! Pesanan Anda telah diterima dan akan segera diproses."
+        );
+        cart = [];
+        updateCart();
+        closeCart();
+      }
+
+      // Filter menu by category
+      function filterMenu(category) {
+        const menuItems = document.querySelectorAll(".menu-item");
+        const categoryButtons = document.querySelectorAll(".category-btn");
+
+        // Update active button
+        categoryButtons.forEach((button) => {
+          if (
+            button.textContent.toLowerCase().includes(category) ||
+            (category === "all" && button.textContent === "Semua")
+          ) {
+            button.classList.add("active");
+          } else {
+            button.classList.remove("active");
+          }
+        });
+
+        // Show/hide menu items
+        menuItems.forEach((item) => {
+          if (
+            category === "all" ||
+            item.getAttribute("data-category") === category
+          ) {
+            item.style.display = "block";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      }
+
+      // Handle reservation form submission
+      document
+        .getElementById("reservationForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("name").value;
+          const phone = document.getElementById("phone").value;
+          const date = document.getElementById("date").value;
+          const time = document.getElementById("time").value;
+
+          alert(
+            `Terima kasih ${name}! Reservasi Anda pada ${date} pukul ${time} telah diterima. Kami akan menghubungi Anda di ${phone} untuk konfirmasi.`
+          );
+          this.reset();
+        });
+
+      // Initialize page
+      updateCart();
+
+      //BARU
+
+      // Variabel global untuk checkout
+      let currentStep = 1;
+      let selectedPaymentMethod = "";
+      let orderData = {
+        items: [],
+        customer: {},
+        payment: {},
+        total: 0,
+      };
+
+      // Fungsi untuk membuka modal checkout
+      function startCheckout() {
+        if (cart.length === 0) {
+          alert("Keranjang belanja Anda masih kosong.");
+          return;
+        }
+
+        // Tutup modal keranjang
+        closeCart();
+
+        // Buka modal checkout
+        document.getElementById("checkoutModal").style.display = "flex";
+
+        // Update data pesanan
+        orderData.items = [...cart];
+        updateTotal();
+
+        // Reset ke step 1
+        goToStep(1);
+      }
+
+      // Fungsi untuk menutup modal checkout
+      function closeCheckout() {
+        document.getElementById("checkoutModal").style.display = "none";
+        // Reset ke step 1 jika modal ditutup
+        if (currentStep !== 1) {
+          goToStep(1);
+        }
+      }
+
+      // Fungsi untuk berpindah antar step
+      function goToStep(step) {
+        // Validasi form sebelum berpindah step
+        if (step > currentStep && !validateCurrentStep()) {
+          return;
+        }
+
+        // Sembunyikan semua step
+        document.getElementById("checkoutStep1").style.display = "none";
+        document.getElementById("checkoutStep2").style.display = "none";
+        document.getElementById("checkoutStep3").style.display = "none";
+        document.getElementById("checkoutSuccess").style.display = "none";
+
+        // Nonaktifkan semua step indicator
+        document.querySelectorAll(".step").forEach((stepEl) => {
+          stepEl.classList.remove("active");
+        });
+
+        // Tampilkan step yang dipilih dan aktifkan indicator
+        if (step === 1) {
+          document.getElementById("checkoutStep1").style.display = "block";
+          document.getElementById("step1").classList.add("active");
+        } else if (step === 2) {
+          document.getElementById("checkoutStep2").style.display = "block";
+          document.getElementById("step2").classList.add("active");
+          saveCustomerData();
+        } else if (step === 3) {
+          document.getElementById("checkoutStep3").style.display = "block";
+          document.getElementById("step3").classList.add("active");
+          updateConfirmationData();
+        }
+
+        currentStep = step;
+      }
+
+      // Validasi form pada step saat ini
+      function validateCurrentStep() {
+        if (currentStep === 1) {
+          // Validasi form data diri
+          const name = document.getElementById("customerName").value.trim();
+          const email = document.getElementById("customerEmail").value.trim();
+          const phone = document.getElementById("customerPhone").value.trim();
+          const address = document
+            .getElementById("customerAddress")
+            .value.trim();
+
+          if (!name) {
+            alert("Nama lengkap harus diisi");
+            return false;
+          }
+
+          if (!email) {
+            alert("Email harus diisi");
+            return false;
+          } else if (!isValidEmail(email)) {
+            alert("Format email tidak valid");
+            return false;
+          }
+
+          if (!phone) {
+            alert("Nomor telepon harus diisi");
+            return false;
+          }
+
+          if (!address) {
+            alert("Alamat harus diisi");
+            return false;
+          }
+
+          return true;
+        } else if (currentStep === 2) {
+          // Validasi metode pembayaran
+          if (!selectedPaymentMethod) {
+            alert("Pilih metode pembayaran terlebih dahulu");
+            return false;
+          }
+
+          // Validasi tambahan untuk pembayaran kartu
+          if (
+            selectedPaymentMethod === "credit" ||
+            selectedPaymentMethod === "debit"
+          ) {
+            const cardNumber = document
+              .getElementById("cardNumber")
+              .value.trim();
+            const cardExpiry = document
+              .getElementById("cardExpiry")
+              .value.trim();
+            const cardCVC = document.getElementById("cardCVC").value.trim();
+            const cardName = document.getElementById("cardName").value.trim();
+
+            if (!cardNumber || cardNumber.replace(/\s/g, "").length !== 16) {
+              alert("Nomor kartu harus 16 digit");
+              return false;
+            }
+
+            if (!cardExpiry || !isValidExpiry(cardExpiry)) {
+              alert("Format masa berlaku tidak valid (MM/YY)");
+              return false;
+            }
+
+            if (!cardCVC || cardCVC.length !== 3) {
+              alert("CVV/CVC harus 3 digit");
+              return false;
+            }
+
+            if (!cardName) {
+              alert("Nama pada kartu harus diisi");
+              return false;
+            }
+          }
+
+          savePaymentData();
+          return true;
+        }
+
+        return true;
+      }
+
+      // Fungsi untuk memilih metode pembayaran
+      function selectPayment(method) {
+        selectedPaymentMethod = method;
+
+        // Reset semua tampilan detail pembayaran
+        document.getElementById("bankDetails").style.display = "none";
+        document.getElementById("cardDetails").style.display = "none";
+
+        // Hapus kelas aktif dari semua metode
+        document.querySelectorAll(".payment-method").forEach((el) => {
+          el.classList.remove("selected");
+        });
+
+        // Tambahkan kelas aktif ke metode yang dipilih
+        event.currentTarget.classList.add("selected");
+
+        // Tampilkan detail sesuai metode yang dipilih
+        if (method === "bank") {
+          document.getElementById("bankDetails").style.display = "block";
+          document.getElementById("bankTotal").textContent = formatCurrency(
+            orderData.total
+          );
+        } else if (method === "credit" || method === "debit") {
+          document.getElementById("cardDetails").style.display = "block";
+        }
+      }
+
+      // Fungsi untuk menyimpan data customer
+      function saveCustomerData() {
+        orderData.customer = {
+          name: document.getElementById("customerName").value,
+          email: document.getElementById("customerEmail").value,
+          phone: document.getElementById("customerPhone").value,
+          address: document.getElementById("customerAddress").value,
+          note: document.getElementById("customerNote").value,
+        };
+      }
+
+      // Fungsi untuk menyimpan data pembayaran
+      function savePaymentData() {
+        if (
+          selectedPaymentMethod === "credit" ||
+          selectedPaymentMethod === "debit"
+        ) {
+          orderData.payment = {
+            method: selectedPaymentMethod,
+            cardNumber: document.getElementById("cardNumber").value,
+            cardExpiry: document.getElementById("cardExpiry").value,
+            cardCVC: document.getElementById("cardCVC").value,
+            cardName: document.getElementById("cardName").value,
+          };
+        } else {
+          orderData.payment = {
+            method: selectedPaymentMethod,
+          };
+        }
+      }
+
+      // Fungsi untuk mengupdate data konfirmasi
+      function updateConfirmationData() {
+        // Update data customer
+        document.getElementById("confirmName").textContent =
+          orderData.customer.name;
+        document.getElementById("confirmEmail").textContent =
+          orderData.customer.email;
+        document.getElementById("confirmPhone").textContent =
+          orderData.customer.phone;
+        document.getElementById("confirmAddress").textContent =
+          orderData.customer.address;
+
+        // Update metode pembayaran
+        let paymentText = "";
+        switch (orderData.payment.method) {
+          case "bank":
+            paymentText = "Transfer Bank";
+            break;
+          case "credit":
+            paymentText = "Kartu Kredit";
+            break;
+          case "debit":
+            paymentText = "Kartu Debit";
+            break;
+          case "cash":
+            paymentText = "Tunai di Tempat";
+            break;
+          default:
+            paymentText = "-";
+        }
+        document.getElementById("confirmPayment").textContent = paymentText;
+
+        // Update items pesanan
+        const confirmItemsEl = document.getElementById("confirmItems");
+        confirmItemsEl.innerHTML = "";
+
+        orderData.items.forEach((item) => {
+          const itemEl = document.createElement("div");
+          itemEl.className = "summary-item";
+          itemEl.innerHTML = `
+            <span>${item.name} (${item.quantity}x)</span>
+            <span>${formatCurrency(item.price * item.quantity)}</span>
+        `;
+          confirmItemsEl.appendChild(itemEl);
+        });
+
+        // Update total
+        document.getElementById("confirmTotal").textContent = formatCurrency(
+          orderData.total
+        );
+      }
+
+      // Fungsi untuk mengonfirmasi pesanan
+      function confirmOrder() {
+        // Simulasi pengiriman data ke server
+        // Dalam implementasi nyata, ini akan menjadi AJAX request
+
+        // Generate kode pesanan acak
+        const orderCode = "CAFE" + Math.floor(10000 + Math.random() * 90000);
+        document.getElementById("orderCode").textContent = orderCode;
+
+        // Tampilkan pesan sukses
+        document.getElementById("checkoutStep3").style.display = "none";
+        document.getElementById("checkoutSuccess").style.display = "block";
+
+        // Reset cart dan data checkout setelah 3 detik
+        setTimeout(() => {
+          // Reset data
+          orderData = {
+            items: [],
+            customer: {},
+            payment: {},
+            total: 0,
+          };
+          currentStep = 1;
+          selectedPaymentMethod = "";
+
+          // Reset form
+          document.getElementById("customerForm").reset();
+          document.querySelectorAll(".payment-method").forEach((el) => {
+            el.classList.remove("selected");
+          });
+          document.getElementById("bankDetails").style.display = "none";
+          document.getElementById("cardDetails").style.display = "none";
+
+          // Reset keranjang
+          cart = [];
+          updateCart();
+        }, 3000);
+      }
+
+      // Fungsi untuk menghitung total
+      function updateTotal() {
+        orderData.total = orderData.items.reduce((sum, item) => {
+          return sum + item.price * item.quantity;
+        }, 0);
+      }
+
+      // Fungsi utilitas: validasi email
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Fungsi utilitas: validasi tanggal kadaluarsa kartu
+      function isValidExpiry(expiry) {
+        const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+        if (!expiryRegex.test(expiry)) return false;
+
+        const [month, year] = expiry.split("/");
+        const now = new Date();
+        const currentYear = now.getFullYear() % 100;
+        const currentMonth = now.getMonth() + 1;
+
+        // Jika tahun lebih kecil dari tahun sekarang, tidak valid
+        if (parseInt(year) < currentYear) return false;
+
+        // Jika tahun sama, bulan harus lebih besar atau sama dengan bulan sekarang
+        if (parseInt(year) === currentYear && parseInt(month) < currentMonth)
+          return false;
+
+        return true;
+      }
+
+      // Fungsi utilitas: format mata uang
+      function formatCurrency(amount) {
+        return "Rp " + amount.toLocaleString("id-ID");
+      }
+
+      // Event listener untuk menutup modal ketika klik di luar konten
+      window.onclick = function (event) {
+        const cartModal = document.getElementById("cartModal");
+        const checkoutModal = document.getElementById("checkoutModal");
+
+        if (event.target === cartModal) {
+          closeCart();
+        }
+
+        if (event.target === checkoutModal) {
+          closeCheckout();
+        }
+      };
+
+      // Event listener untuk tombol escape
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeCart();
+          closeCheckout();
+        }
+      });
+    </script>
+  </body>
+</html>
