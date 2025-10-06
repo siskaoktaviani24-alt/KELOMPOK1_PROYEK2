@@ -1,4 +1,3 @@
-<!-- resources/views/layouts/footer.blade.php -->
 <footer class="bg-dark text-light pt-5 pb-3 mt-auto">
     <div class="container">
         <div class="row gy-4">
