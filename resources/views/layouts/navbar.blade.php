@@ -1,4 +1,4 @@
-t<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #4b312b;">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #4b312b;">
     <div class="container">
         <!-- Logo dan Nama -->
         <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
