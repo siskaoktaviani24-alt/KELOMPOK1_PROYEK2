@@ -8,4 +8,4 @@ Route::get('/navbar', function () {
 
 Route::get('/footer', function () {
     return view('footer');
-});
+});git
