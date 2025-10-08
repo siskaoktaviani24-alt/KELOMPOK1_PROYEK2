@@ -1,29 +1,25 @@
 <?php
+// database/migrations/xxxx_xx_xx_xxxxxx_create_mejas_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateMejasTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
-        Schema::create('meja', function (Blueprint $table) {
-            $table->id('no_meja'); 
-            $table->string('status')->default('kosong');
-            $table->string('pesanan')->nullable();
+        Schema::create('mejas', function (Blueprint $table) {
+            $table->id();
+            $table->string('no_meja')->unique();
+            $table->enum('statusMeja', ['tersedia', 'terpakai', 'reserved'])->default('tersedia');
+            $table->integer('kapasitas');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('meja');
+        Schema::dropIfExists('mejas');
     }
-};
+}
