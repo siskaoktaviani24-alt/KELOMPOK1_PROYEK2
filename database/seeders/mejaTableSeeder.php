@@ -9,22 +9,30 @@ class MejaTableSeeder extends Seeder
 {
     public function run(): void
     {
-        // Bersihkan tabel dulu biar tidak dobel
+        // Hapus isi tabel untuk mencegah data dobel
         DB::table('meja')->truncate();
 
-        // Insert beberapa meja sekaligus
         DB::table('meja')->insert([
             [
-                'status'   => 'kosong',
-                'pesanan'  => null,
+                'no_meja'   => 'A1',
+                'kapasitas' => 4,
+                'status'    => 'tersedia',
+                'pesanan'   => null,
+                'is_booked' => false,
             ],
             [
-                'status'   => 'terisi',
-                'pesanan'  => 'Nasi Goreng',
+                'no_meja'   => 'A2',
+                'kapasitas' => 4,
+                'status'    => 'dipesan',
+                'pesanan'   => json_encode(['Nasi Goreng']),
+                'is_booked' => true,
             ],
             [
-                'status'   => 'kosong',
-                'pesanan'  => null,
+                'no_meja'   => 'B1',
+                'kapasitas' => 2,
+                'status'    => 'tersedia',
+                'pesanan'   => null,
+                'is_booked' => false,
             ],
         ]);
     }
